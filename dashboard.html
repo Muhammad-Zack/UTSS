@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="profile">
+            <img src="profile.png" alt="Profile">
+            <h2>Yovan Fiqri</h2>
+            <p>Administrator</p>
+        </div>
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <h3>Menu Karyawan</h3>
+            <a href="#">Karyawan</a>
+            <a href="#">Jabatan</a>
+            <a href="#">Divisi</a>
+            <h3>Menu Absensi</h3>
+            <a href="#">Absensi</a>
+            <a href="#">Izin</a>
+            <a href="#">Lembur</a>
+            <h3>Menu Penggajian</h3>
+            <a href="#">Slip Gaji</a>
+            <h3>Menu Laporan</h3>
+            <a href="#">Cetak Laporan</a>
+            <h3>Menu Admin</h3>
+            <a href="#">Pengguna</a>
+            <a href="#" class="logout">Logout</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h1>Dashboard</h1>
+            <button class="btn-primary">Tambah Karyawan</button>
+        </header>
+
+        <!-- Employee Data Table -->
+        <section class="table-section">
+            <h2>Data Karyawan</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Alamat</th>
+                        <th>Jabatan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>K001</td>
+                        <td>Yovan Fiqri</td>
+                        <td>yf@gmail.com</td>
+                        <td>Jl. Percetakan Negara...</td>
+                        <td>Staff</td>
+                        <td>
+                            <button class="btn-view">View</button>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Tambahkan baris lainnya sesuai kebutuhan -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

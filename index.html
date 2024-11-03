@@ -1,0 +1,808 @@
+<html>
+ <head>
+  <title>
+   Admin Dashboard
+  </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #fff;
+            position: fixed;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar .header {
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+        }
+        .sidebar .header img {
+            width: 50px;
+            border-radius: 50%;
+        }
+        .sidebar .header h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+        }
+        .sidebar .header p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .sidebar .menu {
+            padding: 20px;
+        }
+        .sidebar .menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .sidebar .menu a:hover, .sidebar .menu a.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .sidebar .menu a i {
+            margin-right: 10px;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .main-content .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .main-content .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .main-content .header p {
+            margin: 5px 0 0;
+            font-size: 16px;
+        }
+        .main-content .cards {
+            display: flex;
+            gap: 20px;
+        }
+        .main-content .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+            text-align: center;
+        }
+        .main-content .card i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .main-content .card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .main-content .card p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+  </style>
+  <script>
+   function showSection(sectionId) {
+            var sections = document.querySelectorAll('.content-section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+  </script>
+ </head>
+ <body>
+  <div class="sidebar">
+   <div class="header">
+    <img alt="User profile picture" height="50" src="" width="50"/>
+    <h3>
+     Welcome, Yovan Fiqri
+    </h3>
+    <p>
+     Administrator
+    </p>
+   </div>
+   <div class="menu">
+    <a class="active" href="#" onclick="showSection('dashboard')">
+     <i class="fas fa-tachometer-alt">
+     </i>
+     Dashboard
+    </a>
+    <div class="menu-section">
+     <h4>
+      Menu Karyawan
+     </h4>
+     <a href="#" onclick="showSection('karyawan')">
+      <i class="fas fa-users">
+      </i>
+      Karyawan
+     </a>
+     <a href="#" onclick="showSection('jabatan')">
+      <i class="fas fa-briefcase">
+      </i>
+      Jabatan
+     </a>
+     <a href="#" onclick="showSection('divisi')">
+      <i class="fas fa-building">
+      </i>
+      Divisi
+     </a>
+    </div>
+    <div class="menu-section">
+     <h4>
+      Menu Absensi
+     </h4>
+     <a href="#" onclick="showSection('absensi')">
+      <i class="fas fa-calendar-check">
+      </i>
+      Absensi
+     </a>
+     <a href="#" onclick="showSection('izin')">
+      <i class="fas fa-calendar-times">
+      </i>
+      Izin
+     </a>
+     <a href="#" onclick="showSection('lembur')">
+      <i class="fas fa-clock">
+      </i>
+      Lembur
+     </a>
+    </div>
+   </div>
+  </div>
+  <div class="main-content">
+   <div class="content-section active" id="dashboard">
+    <div class="header">
+     <h1>
+      Sistem Informasi Manajemen Karyawan
+     </h1>
+     <p>
+      Admin Dashboard
+     </p>
+    </div>
+    <div class="cards">
+     <div class="card">
+      <i class="fas fa-users">
+      </i>
+      <h3>
+       Data Pegawai
+      </h3>
+      <p>
+       13
+      </p>
+     </div>
+     <div class="card">
+      <i class="fas fa-calendar-check">
+      </i>
+      <h3>
+       Absensi Hari Ini
+      </h3>
+      <p>
+       0
+      </p>
+      <p>
+       11 May 2023
+      </p>
+     </div>
+     <div class="card">
+      <i class="fas fa-calendar-times">
+      </i>
+      <h3>
+       Izin Menunggu Konfirmasi
+      </h3>
+      <p>
+       2
+      </p>
+     </div>
+     <div class="card">
+      <i class="fas fa-clock">
+      </i>
+      <h3>
+       Lembur Menunggu Konfirmasi
+      </h3>
+      <p>
+       1
+      </p>
+     </div>
+    </div>
+   </div>
+   <div class="content-section" id="karyawan">
+    <div class="header">
+     <h1>
+      Data Karyawan
+     </h1>
+    </div>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        No
+       </th>
+       <th>
+        Kode
+       </th>
+       <th>
+        Nama
+       </th>
+       <th>
+        Email
+       </th>
+       <th>
+        Alamat
+       </th>
+       <th>
+        Jabatan
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        1
+       </td>
+       <td>
+        K001
+       </td>
+       <td>
+        Achmad Febry
+       </td>
+       <td>
+        achmad.febry@example.com
+       </td>
+       <td>
+        Jl. Percetakan Negara No.45.Gang.j,Rt 001/Rw09 Cempaka Putih
+       </td>
+       <td>
+        Staff
+       </td>
+      </tr>
+      <tr>
+       <td>
+        2
+       </td>
+       <td>
+        K002
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        yovan.fiqri@example.com
+       </td>
+       <td>
+        Solo
+       </td>
+       <td>
+        Kepala Bagian
+       </td>
+      </tr>
+      <tr>
+       <td>
+        3
+       </td>
+       <td>
+        K003
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        yovan.fiqri@example.com
+       </td>
+       <td>
+        Parung
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        4
+       </td>
+       <td>
+        K004
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        yovan.fiqri@example.com
+       </td>
+       <td>
+        Jl. Kimia No.20
+       </td>
+       <td>
+        Staff
+       </td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="content-section" id="jabatan">
+    <div class="header">
+     <h1>
+      Data Jabatan
+     </h1>
+    </div>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        No
+       </th>
+       <th>
+        Kode Jabatan
+       </th>
+       <th>
+        Jabatan
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        1
+       </td>
+       <td>
+        JAB001
+       </td>
+       <td>
+        Kepala Bagian
+       </td>
+      </tr>
+      <tr>
+       <td>
+        2
+       </td>
+       <td>
+        JAB002
+       </td>
+       <td>
+        Kepala Sub Bagian
+       </td>
+      </tr>
+      <tr>
+       <td>
+        3
+       </td>
+       <td>
+        JAB003
+       </td>
+       <td>
+        Staff
+       </td>
+      </tr>
+      <tr>
+       <td>
+        4
+       </td>
+       <td>
+        JAB004
+       </td>
+       <td>
+        Warek
+       </td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="content-section" id="divisi">
+    <div class="header">
+     <h1>
+      Data Divisi
+     </h1>
+    </div>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        No
+       </th>
+       <th>
+        Kode Divisi
+       </th>
+       <th>
+        Nama Divisi
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        1
+       </td>
+       <td>
+        DIV001
+       </td>
+       <td>
+        UMUM
+       </td>
+      </tr>
+      <tr>
+       <td>
+        2
+       </td>
+       <td>
+        DIV002
+       </td>
+       <td>
+        BAUK
+       </td>
+      </tr>
+      <tr>
+       <td>
+        3
+       </td>
+       <td>
+        DIV003
+       </td>
+       <td>
+        BAA
+       </td>
+      </tr>
+      <tr>
+       <td>
+        4
+       </td>
+       <td>
+        DIV004
+       </td>
+       <td>
+        IT
+       </td>
+      </tr>
+      <tr>
+       <td>
+        5
+       </td>
+       <td>
+        DIV005
+       </td>
+       <td>
+        Cleaning Servis
+       </td>
+      </tr>
+      <tr>
+       <td>
+        6
+       </td>
+       <td>
+        DIV006
+       </td>
+       <td>
+        OB
+       </td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="content-section" id="absensi">
+    <div class="header">
+     <h1>
+      Data Absensi
+     </h1>
+    </div>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        No
+       </th>
+       <th>
+        Nama Karyawan
+       </th>
+       <th>
+        Tanggal
+       </th>
+       <th>
+        Lokasi Absen
+       </th>
+       <th>
+        Jam Masuk
+       </th>
+       <th>
+        Jam Keluar
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        1
+       </td>
+       <td>
+        Achmad Febry
+       </td>
+       <td>
+        2023-05-10
+       </td>
+       <td>
+        Kampus Kimia
+       </td>
+       <td>
+        16:21:14
+       </td>
+       <td>
+        18:09:22
+       </td>
+      </tr>
+      <tr>
+       <td>
+        2
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        2023-05-10
+       </td>
+       <td>
+        UNPAM Viktor
+       </td>
+       <td>
+        10:35:02
+       </td>
+       <td>
+        10:35:02
+       </td>
+      </tr>
+      <tr>
+       <td>
+        3
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        2024-05-09
+       </td>
+       <td>
+        UNPAM Viktor
+       </td>
+       <td>
+        11:04:40
+       </td>
+       <td>
+        11:04:40
+       </td>
+      </tr>
+      <tr>
+       <td>
+        4
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        2023-05-05
+       </td>
+       <td>
+        Kampus Kimia
+       </td>
+       <td>
+        16:44:28
+       </td>
+       <td>
+        19:51:29
+       </td>
+      </tr>
+      <tr>
+       <td>
+        5
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        2023-05-03
+       </td>
+       <td>
+        UNPAM Viktor
+       </td>
+       <td>
+        10:47:59
+       </td>
+       <td>
+        10:47:59
+       </td>
+      </tr>
+      <tr>
+       <td>
+        6
+       </td>
+       <td>
+        Renate Nindya
+       </td>
+       <td>
+        2023-04-28
+       </td>
+       <td>
+        Kampus Kimia
+       </td>
+       <td>
+        14:15:58
+       </td>
+       <td>
+        14:15:28
+       </td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="content-section" id="izin">
+    <div class="header">
+     <h1>
+      Data Izin
+     </h1>
+    </div>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        No
+       </th>
+       <th>
+        Nama
+       </th>
+       <th>
+        Izin
+       </th>
+       <th>
+        Tanggal
+       </th>
+       <th>
+        Jam
+       </th>
+       <th>
+        Keterangan
+       </th>
+       <th>
+        Status
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        1
+       </td>
+       <td>
+        Yovan Fiqri
+       </td>
+       <td>
+        Sakit
+       </td>
+       <td>
+        10 May 2023
+       </td>
+       <td>
+        08:00
+       </td>
+       <td>
+        Demam
+       </td>
+       <td>
+        Menunggu
+       </td>
+      </tr>
+      <tr>
+       <td>
+        2
+       </td>
+       <td>
+        Renate Nindya
+       </td>
+       <td>
+        Cuti
+       </td>
+       <td>
+        12 May 2023
+       </td>
+       <td>
+        09:00
+       </td>
+       <td>
+        Liburan
+       </td>
+       <td>
+        Disetujui
+       </td>
+      </tr>
+      <tr>
+       <td>
+        3
+       </td>
+       <td>
+        Bob Johnson
+       </td>
+       <td>
+        Sakit
+       </td>
+       <td>
+        11 May 2023
+       </td>
+       <td>
+        08:30
+       </td>
+       <td>
+        Flu
+       </td>
+       <td>
+        Menunggu
+       </td>
+      </tr>
+      <tr>
+       <td>
+        4
+       </td>
+       <td>
+        Tattang
+       </td>
+       <td>
+        Cuti
+       </td>
+       <td>
+        13 May 2023
+       </td>
+       <td>
+        10:00
+       </td>
+       <td>
+        Urusan Keluarga
+       </td>
+       <td>
+        Disetujui
+       </td>
+      </tr>
+      <tr>
+       <td>
+        5
+       </td>
+       <td>
+        Alice Brown
+       </td>
+       <td>
+        Sakit
+       </td>
+       <td>
+        14 May
