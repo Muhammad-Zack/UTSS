@@ -1,808 +1,231 @@
+<!DOCTYPE html>
 <html>
- <head>
-  <title>
-   Admin Dashboard
-  </title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<head>
+  <title>Enhanced Snake Game Cipung</title>
+  <meta charset="UTF-8">
   <style>
-   body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #fff;
-            position: fixed;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-        }
-        .sidebar .header {
-            padding: 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-align: center;
-        }
-        .sidebar .header img {
-            width: 50px;
-            border-radius: 50%;
-        }
-        .sidebar .header h3 {
-            margin: 10px 0 5px;
-            font-size: 18px;
-        }
-        .sidebar .header p {
-            margin: 0;
-            font-size: 14px;
-        }
-        .sidebar .menu {
-            padding: 20px;
-        }
-        .sidebar .menu a {
-            display: block;
-            padding: 10px 15px;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        .sidebar .menu a:hover, .sidebar .menu a.active {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .sidebar .menu a i {
-            margin-right: 10px;
-        }
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-        .main-content .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        .main-content .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .main-content .header p {
-            margin: 5px 0 0;
-            font-size: 16px;
-        }
-        .main-content .cards {
-            display: flex;
-            gap: 20px;
-        }
-        .main-content .card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            flex: 1;
-            text-align: center;
-        }
-        .main-content .card i {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .main-content .card h3 {
-            margin: 10px 0;
-            font-size: 18px;
-        }
-        .main-content .card p {
-            margin: 0;
-            font-size: 14px;
-        }
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
+      background: url('CipungHaji2.jpeg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5); /* Efek gelap untuk kontras */
+      pointer-events: none;
+      z-index: 1;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 20px;
+      z-index: 2;
+    }
+    #welcome {
+      position: absolute;
+      font-size: 30px;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      animation: fadeOut 2s forwards;
+    }
+    #title {
+      position: absolute;
+      top: 10%;
+      font-size: 36px;
+      text-align: center;
+      width: 100%;
+      color: #ffd700;
+      z-index: 3;
+      font-weight: bold;
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    canvas {
+      border: 1px solid white;
+      z-index: 2;
+    }
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.8; }
+    }
   </style>
+</head>
+<body>
+  <div id="title">Snake Game</div> <!-- Teks tambahan di atas permainan -->
+  <div id="score">Score: 0</div>
+  <div id="welcome">Selamat Datang!</div>
+  <canvas width="400" height="400" id="game"></canvas>
+  <div class="stars"></div>
+
   <script>
-   function showSection(sectionId) {
-            var sections = document.querySelectorAll('.content-section');
-            sections.forEach(function(section) {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
+    // JavaScript for the Snake Game (existing code)
+    var canvas = document.getElementById('game');
+    var context = canvas.getContext('2d');
+    var grid = 16;
+    var count = 0;
+    var score = 0;
+    var speed = 4;
+    var gamePaused = false;
+
+    var snake = {
+      x: 160,
+      y: 160,
+      dx: grid,
+      dy: 0,
+      cells: [],
+      maxCells: 4
+    };
+    var apple = { x: 320, y: 320 };
+    var obstacles = [
+      { x: 80, y: 80 },
+      { x: 240, y: 240 },
+      { x: 160, y: 320 }
+    ];
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function loop() {
+      if (gamePaused) return;
+      requestAnimationFrame(loop);
+      if (++count < speed) return;
+      count = 0;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      snake.x += snake.dx;
+      snake.y += snake.dy;
+
+      if (snake.x < 0) snake.x = canvas.width - grid;
+      else if (snake.x >= canvas.width) snake.x = 0;
+      if (snake.y < 0) snake.y = canvas.height - grid;
+      else if (snake.y >= canvas.height) snake.y = 0;
+
+      snake.cells.unshift({x: snake.x, y: snake.y});
+      if (snake.cells.length > snake.maxCells) snake.cells.pop();
+
+      context.fillStyle = 'red';
+      context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+
+      context.fillStyle = 'green';
+      snake.cells.forEach(function(cell, index) {
+        context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+
+        if (cell.x === apple.x && cell.y === apple.y) {
+          snake.maxCells++;
+          score++;
+          document.getElementById('score').innerText = 'Score: ' + score;
+          apple.x = getRandomInt(0, 25) * grid;
+          apple.y = getRandomInt(0, 25) * grid;
+          if (score % 5 === 0) speed = Math.max(1, speed - 1);
         }
+        for (var i = index + 1; i < snake.cells.length; i++) {
+          if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) resetGame();
+        }
+      });
+
+      drawObstacles();
+      checkCollisionWithObstacles();
+    }
+
+    function drawObstacles() {
+      context.fillStyle = 'blue';
+      obstacles.forEach(function(obstacle) {
+        context.fillRect(obstacle.x, obstacle.y, grid - 1, grid - 1);
+      });
+    }
+
+    function checkCollisionWithObstacles() {
+      obstacles.forEach(function(obstacle) {
+        if (snake.x === obstacle.x && snake.y === obstacle.y) resetGame();
+      });
+    }
+
+    function resetGame() {
+      alert('Game Over! Your score was: ' + score);
+      snake.x = 160;
+      snake.y = 160;
+      snake.cells = [];
+      snake.maxCells = 4;
+      snake.dx = grid;
+      snake.dy = 0;
+      score = 0;
+      speed = 4;
+      document.getElementById('score').innerText = 'Score: 0';
+      apple.x = getRandomInt(0, 25) * grid;
+      apple.y = getRandomInt(0, 25) * grid;
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.which === 80) {
+        gamePaused = !gamePaused;
+        if (!gamePaused) requestAnimationFrame(loop);
+      }
+      if (gamePaused) return;
+
+      if (e.which === 37 && snake.dx === 0) {
+        snake.dx = -grid;
+        snake.dy = 0;
+      } else if (e.which === 38 && snake.dy === 0) {
+        snake.dy = -grid;
+        snake.dx = 0;
+      } else if (e.which === 39 && snake.dx === 0) {
+        snake.dx = grid;
+        snake.dy = 0;
+      } else if (e.which === 40 && snake.dy === 0) {
+        snake.dy = grid;
+        snake.dx = 0;
+      }
+    });
+
+    requestAnimationFrame(loop);
+
+    // JavaScript for Star Animation
+    function createStars() {
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.style.width = `${Math.random() * 3 + 1}px`;
+        star.style.height = star.style.width;
+        star.style.top = `${Math.random() * window.innerHeight}px`;
+        star.style.left = `${Math.random() * window.innerWidth}px`;
+
+        document.querySelector('.stars').appendChild(star);
+      }
+    }
+    createStars();
   </script>
- </head>
- <body>
-  <div class="sidebar">
-   <div class="header">
-    <img alt="User profile picture" height="50" src="" width="50"/>
-    <h3>
-     Welcome, Yovan Fiqri
-    </h3>
-    <p>
-     Administrator
-    </p>
-   </div>
-   <div class="menu">
-    <a class="active" href="#" onclick="showSection('dashboard')">
-     <i class="fas fa-tachometer-alt">
-     </i>
-     Dashboard
-    </a>
-    <div class="menu-section">
-     <h4>
-      Menu Karyawan
-     </h4>
-     <a href="#" onclick="showSection('karyawan')">
-      <i class="fas fa-users">
-      </i>
-      Karyawan
-     </a>
-     <a href="#" onclick="showSection('jabatan')">
-      <i class="fas fa-briefcase">
-      </i>
-      Jabatan
-     </a>
-     <a href="#" onclick="showSection('divisi')">
-      <i class="fas fa-building">
-      </i>
-      Divisi
-     </a>
-    </div>
-    <div class="menu-section">
-     <h4>
-      Menu Absensi
-     </h4>
-     <a href="#" onclick="showSection('absensi')">
-      <i class="fas fa-calendar-check">
-      </i>
-      Absensi
-     </a>
-     <a href="#" onclick="showSection('izin')">
-      <i class="fas fa-calendar-times">
-      </i>
-      Izin
-     </a>
-     <a href="#" onclick="showSection('lembur')">
-      <i class="fas fa-clock">
-      </i>
-      Lembur
-     </a>
-    </div>
-   </div>
-  </div>
-  <div class="main-content">
-   <div class="content-section active" id="dashboard">
-    <div class="header">
-     <h1>
-      Sistem Informasi Manajemen Karyawan
-     </h1>
-     <p>
-      Admin Dashboard
-     </p>
-    </div>
-    <div class="cards">
-     <div class="card">
-      <i class="fas fa-users">
-      </i>
-      <h3>
-       Data Pegawai
-      </h3>
-      <p>
-       13
-      </p>
-     </div>
-     <div class="card">
-      <i class="fas fa-calendar-check">
-      </i>
-      <h3>
-       Absensi Hari Ini
-      </h3>
-      <p>
-       0
-      </p>
-      <p>
-       11 May 2023
-      </p>
-     </div>
-     <div class="card">
-      <i class="fas fa-calendar-times">
-      </i>
-      <h3>
-       Izin Menunggu Konfirmasi
-      </h3>
-      <p>
-       2
-      </p>
-     </div>
-     <div class="card">
-      <i class="fas fa-clock">
-      </i>
-      <h3>
-       Lembur Menunggu Konfirmasi
-      </h3>
-      <p>
-       1
-      </p>
-     </div>
-    </div>
-   </div>
-   <div class="content-section" id="karyawan">
-    <div class="header">
-     <h1>
-      Data Karyawan
-     </h1>
-    </div>
-    <table>
-     <thead>
-      <tr>
-       <th>
-        No
-       </th>
-       <th>
-        Kode
-       </th>
-       <th>
-        Nama
-       </th>
-       <th>
-        Email
-       </th>
-       <th>
-        Alamat
-       </th>
-       <th>
-        Jabatan
-       </th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr>
-       <td>
-        1
-       </td>
-       <td>
-        K001
-       </td>
-       <td>
-        Achmad Febry
-       </td>
-       <td>
-        achmad.febry@example.com
-       </td>
-       <td>
-        Jl. Percetakan Negara No.45.Gang.j,Rt 001/Rw09 Cempaka Putih
-       </td>
-       <td>
-        Staff
-       </td>
-      </tr>
-      <tr>
-       <td>
-        2
-       </td>
-       <td>
-        K002
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        yovan.fiqri@example.com
-       </td>
-       <td>
-        Solo
-       </td>
-       <td>
-        Kepala Bagian
-       </td>
-      </tr>
-      <tr>
-       <td>
-        3
-       </td>
-       <td>
-        K003
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        yovan.fiqri@example.com
-       </td>
-       <td>
-        Parung
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        4
-       </td>
-       <td>
-        K004
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        yovan.fiqri@example.com
-       </td>
-       <td>
-        Jl. Kimia No.20
-       </td>
-       <td>
-        Staff
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-   <div class="content-section" id="jabatan">
-    <div class="header">
-     <h1>
-      Data Jabatan
-     </h1>
-    </div>
-    <table>
-     <thead>
-      <tr>
-       <th>
-        No
-       </th>
-       <th>
-        Kode Jabatan
-       </th>
-       <th>
-        Jabatan
-       </th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr>
-       <td>
-        1
-       </td>
-       <td>
-        JAB001
-       </td>
-       <td>
-        Kepala Bagian
-       </td>
-      </tr>
-      <tr>
-       <td>
-        2
-       </td>
-       <td>
-        JAB002
-       </td>
-       <td>
-        Kepala Sub Bagian
-       </td>
-      </tr>
-      <tr>
-       <td>
-        3
-       </td>
-       <td>
-        JAB003
-       </td>
-       <td>
-        Staff
-       </td>
-      </tr>
-      <tr>
-       <td>
-        4
-       </td>
-       <td>
-        JAB004
-       </td>
-       <td>
-        Warek
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-   <div class="content-section" id="divisi">
-    <div class="header">
-     <h1>
-      Data Divisi
-     </h1>
-    </div>
-    <table>
-     <thead>
-      <tr>
-       <th>
-        No
-       </th>
-       <th>
-        Kode Divisi
-       </th>
-       <th>
-        Nama Divisi
-       </th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr>
-       <td>
-        1
-       </td>
-       <td>
-        DIV001
-       </td>
-       <td>
-        UMUM
-       </td>
-      </tr>
-      <tr>
-       <td>
-        2
-       </td>
-       <td>
-        DIV002
-       </td>
-       <td>
-        BAUK
-       </td>
-      </tr>
-      <tr>
-       <td>
-        3
-       </td>
-       <td>
-        DIV003
-       </td>
-       <td>
-        BAA
-       </td>
-      </tr>
-      <tr>
-       <td>
-        4
-       </td>
-       <td>
-        DIV004
-       </td>
-       <td>
-        IT
-       </td>
-      </tr>
-      <tr>
-       <td>
-        5
-       </td>
-       <td>
-        DIV005
-       </td>
-       <td>
-        Cleaning Servis
-       </td>
-      </tr>
-      <tr>
-       <td>
-        6
-       </td>
-       <td>
-        DIV006
-       </td>
-       <td>
-        OB
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-   <div class="content-section" id="absensi">
-    <div class="header">
-     <h1>
-      Data Absensi
-     </h1>
-    </div>
-    <table>
-     <thead>
-      <tr>
-       <th>
-        No
-       </th>
-       <th>
-        Nama Karyawan
-       </th>
-       <th>
-        Tanggal
-       </th>
-       <th>
-        Lokasi Absen
-       </th>
-       <th>
-        Jam Masuk
-       </th>
-       <th>
-        Jam Keluar
-       </th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr>
-       <td>
-        1
-       </td>
-       <td>
-        Achmad Febry
-       </td>
-       <td>
-        2023-05-10
-       </td>
-       <td>
-        Kampus Kimia
-       </td>
-       <td>
-        16:21:14
-       </td>
-       <td>
-        18:09:22
-       </td>
-      </tr>
-      <tr>
-       <td>
-        2
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        2023-05-10
-       </td>
-       <td>
-        UNPAM Viktor
-       </td>
-       <td>
-        10:35:02
-       </td>
-       <td>
-        10:35:02
-       </td>
-      </tr>
-      <tr>
-       <td>
-        3
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        2024-05-09
-       </td>
-       <td>
-        UNPAM Viktor
-       </td>
-       <td>
-        11:04:40
-       </td>
-       <td>
-        11:04:40
-       </td>
-      </tr>
-      <tr>
-       <td>
-        4
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        2023-05-05
-       </td>
-       <td>
-        Kampus Kimia
-       </td>
-       <td>
-        16:44:28
-       </td>
-       <td>
-        19:51:29
-       </td>
-      </tr>
-      <tr>
-       <td>
-        5
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        2023-05-03
-       </td>
-       <td>
-        UNPAM Viktor
-       </td>
-       <td>
-        10:47:59
-       </td>
-       <td>
-        10:47:59
-       </td>
-      </tr>
-      <tr>
-       <td>
-        6
-       </td>
-       <td>
-        Renate Nindya
-       </td>
-       <td>
-        2023-04-28
-       </td>
-       <td>
-        Kampus Kimia
-       </td>
-       <td>
-        14:15:58
-       </td>
-       <td>
-        14:15:28
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-   <div class="content-section" id="izin">
-    <div class="header">
-     <h1>
-      Data Izin
-     </h1>
-    </div>
-    <table>
-     <thead>
-      <tr>
-       <th>
-        No
-       </th>
-       <th>
-        Nama
-       </th>
-       <th>
-        Izin
-       </th>
-       <th>
-        Tanggal
-       </th>
-       <th>
-        Jam
-       </th>
-       <th>
-        Keterangan
-       </th>
-       <th>
-        Status
-       </th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr>
-       <td>
-        1
-       </td>
-       <td>
-        Yovan Fiqri
-       </td>
-       <td>
-        Sakit
-       </td>
-       <td>
-        10 May 2023
-       </td>
-       <td>
-        08:00
-       </td>
-       <td>
-        Demam
-       </td>
-       <td>
-        Menunggu
-       </td>
-      </tr>
-      <tr>
-       <td>
-        2
-       </td>
-       <td>
-        Renate Nindya
-       </td>
-       <td>
-        Cuti
-       </td>
-       <td>
-        12 May 2023
-       </td>
-       <td>
-        09:00
-       </td>
-       <td>
-        Liburan
-       </td>
-       <td>
-        Disetujui
-       </td>
-      </tr>
-      <tr>
-       <td>
-        3
-       </td>
-       <td>
-        Bob Johnson
-       </td>
-       <td>
-        Sakit
-       </td>
-       <td>
-        11 May 2023
-       </td>
-       <td>
-        08:30
-       </td>
-       <td>
-        Flu
-       </td>
-       <td>
-        Menunggu
-       </td>
-      </tr>
-      <tr>
-       <td>
-        4
-       </td>
-       <td>
-        Tattang
-       </td>
-       <td>
-        Cuti
-       </td>
-       <td>
-        13 May 2023
-       </td>
-       <td>
-        10:00
-       </td>
-       <td>
-        Urusan Keluarga
-       </td>
-       <td>
-        Disetujui
-       </td>
-      </tr>
-      <tr>
-       <td>
-        5
-       </td>
-       <td>
-        Alice Brown
-       </td>
-       <td>
-        Sakit
-       </td>
-       <td>
-        14 May
+</body>
+</html>
